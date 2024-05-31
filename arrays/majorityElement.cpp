@@ -18,13 +18,13 @@ int majorityElement(int arr[], int n){
     for(int i=0;i<n;i++){
         if(arr[res]==arr[i]) count++;
     }
-    if(count>n/2) return res;
+    if(count>n/2) return arr[res];
     
     return -1;
 }
 
-int main(){
-    int numbersArray[] = {100,2,3,100,5,100,100,101,100};
+int main(){ 
+    int numbersArray[] = {3,1,3,2,4,3,3,3,3};
     cout << majorityElement(numbersArray,sizeof(numbersArray)/sizeof(numbersArray[0]));
     return 0;
 }
