@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 
 using namespace std;
 
@@ -10,42 +11,30 @@ struct TreeNode {
     TreeNode(int value) : data(value), left(nullptr), right(nullptr) {}
 };
 
-void preOrderTraversal(TreeNode * root){
+// Recursive Solution
+void preOrderTraversal(TreeNode *root){
     if(root == nullptr) return;
-
     cout << root->data << " ";
 
     preOrderTraversal(root->left);
     preOrderTraversal(root->right);
 }
 
-void convertBTtoLL(TreeNode* root, TreeNode*& prev) {
-    if(root == nullptr) return;
+// Iterative Solution
+void preOrderTraversal2(TreeNode *root){
+    stack<TreeNode*> nodeStack;
+    TreeNode *mover = root;
 
-    convertBTtoLL(root->right, prev);
-    convertBTtoLL(root->left, prev);
+    while(mover!= nullptr || !nodeStack.empty()){
 
-    root->right = prev;
-    root->left = nullptr;
-
-    prev = root;
-}
-
-void convertBTtoLL2(TreeNode* root){
-    TreeNode* current = root;
-    TreeNode* prev = nullptr;
-    
-    while(current){
-        if(current->left){
-            prev = current->left;
-            while(prev->right) prev = prev->right;
-
-            prev->right = current->right;
-            current->right = current->left;
-            current->left = nullptr;
+        if(mover == nullptr){
+            mover = nodeStack.top();
+            nodeStack.pop();
         }
 
-        current = current->right;
+        cout << mover->data << " ";
+        if(mover->right!=nullptr) nodeStack.push(mover->right);
+        mover = mover->left;
     }
 }
 
@@ -61,11 +50,13 @@ int main(){
     root->left->left->left = new TreeNode(8);
     root->left->left->right = new TreeNode(9);
     root->left->right->left = new TreeNode(10);
+    root->left->right->right = new TreeNode(11);
+    root->right->left->left = new TreeNode(12);
+    root->right->left->right = new TreeNode(13);
+    root->right->right->left = new TreeNode(14);
+    root->right->right->right = new TreeNode(15);
 
-    TreeNode* prev = nullptr;
-    convertBTtoLL2(root);
-
-    preOrderTraversal(root);
+    preOrderTraversal2(root);
 
     return 0;
 }
